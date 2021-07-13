@@ -1,0 +1,159 @@
+exit
+copy-item -Path /var/lib/jenkins/workspace/sample1 -Destination /root/backup/$(Get-Date -Format "DD-MM-YY")
+exit
+copy-item -Path /var/lib/jenkins/workspace/sample1/ -Destination /root/backup/$(get-date -Format "DD-MM-YYYY")
+ls
+cd backup
+ls
+cd DD-06-YYYY
+ls
+cd ..
+Copy-Item -Path /var/lib/jenkins/workspace/sample1/ -Destination /root/backup/$(Get-Date -Format "dd-mm-yyyy")
+cd backup
+ls
+cd 01-36-2021
+ls
+cd ..
+rm -rf 01-36-2021
+rm -rf DD-06-YYYY
+ls
+clear
+cd
+clear
+cd
+cd /opt
+ls
+cd
+cd apache-tomcat-7.0.109
+cd /opt/apache-tomcat-7.0.109
+ls
+cd webapps
+ls
+cd techmine
+ls
+cd ..
+cd techmine.war
+pwd
+cd
+Copy-Item -Path /opt/apache-tomcat-7.0.109/webapps/techmine/  -Destination /root/backup/$(Get-Date -format "dd-mm-yyyy") -Recurse
+cd backup
+ls
+cd 01-45-2021
+ls
+date
+date dd-mm-yyyy
+get-date("dd-mm-yyyy")
+date 'yyyy-mm-dd'
+da"e 'yyyy-mm-dd"
+date +%d-%m-%Y
+cd ..
+rm -rf 01-45-2021
+ls
+cd
+Copy-Item -Path /opt/apache-tomcat-7.0.109/webapps/techmine/  -Destination /root/backup/$(Get-Date -format "dd-mm-yyyy") -Recurse
+cd baackup
+cd backup
+ls
+Copy-Item -Path /opt/apache-tomcat-7.0.109/webapps/techmine/  -Destination /root/backup/$(Get-Date -format "dd-m-yyyy") -Recurse
+ls
+rm -rf 01-50-2021
+rm -rf 01-51-2021
+ls
+Copy-Item -Path /opt/apache-tomcat-7.0.109/webapps/techmine/  -Destination /root/backup/$(Get-Date -format "DD-MM-YYYY") -Recurse
+ls
+Copy-Item -Path /opt/apache-tomcat-7.0.109/webapps/techmine/  -Destination /root/backup/$(Get-Date -format "dd-MM-yyyy") -Recurse
+ls
+rm -rf DD-06-YYYY
+ls
+cd 01-06-2021
+ls
+cd ..
+rm -rf 01-06-2021
+ls
+clear
+cd
+exit
+powershell -version
+pwsh -version
+pwsh -path
+pwsh -Login
+pwsh <filepath
+cd backup
+ls
+Copy-Item -Path /opt/apache-tomcat-7.0.109/webapps/techmine/  -Destination /root/backup/$(Get-Date -format "dd-MM-yyyy")
+ls
+cd 01-06-2021
+ls
+cd ..
+ls
+rm -rf 01-06-2021
+ls
+clear
+cd
+clear
+Copy-Item -Path /opt/apache-tomcat-7.0.109/webapps/techmine/  -Destination /root/backup/$(Get-Date -format "dd-MM-yyyy") -Recurse
+cd backup
+ls
+cd 01-06-2021
+ls
+cd ..
+ls
+ls -la
+ls
+rm -rf 01-06-2021
+ls
+clear
+cd
+clear
+cd backup
+ls
+Copy-Item -Path /opt/apache-tomcat-7.0.109/webapps/techmine/  -Destination /root/backup/$(Get-Date -format "dd-MM-yyyy") -Recurse
+ls
+exit
+Copy-Item -Path /var/lib/jenkins/workspace/sample1/  -Destination /root/backup/$(Get-Date -format "dd-MM-yyyy") -Recurse
+cd backup
+ls
+cd 01-06-2021
+ls
+cd ..
+rm -rf 01-06-2021
+ls
+exit
+clear
+cd
+clear
+get-date
+get-process
+write-host "Hello-world"
+write-output "Hello-wolrd"
+exit
+clear
+PSVersionTable
+$PSVersionTable
+PSVersionTable
+$PSVersionTable
+mkdir powershell
+ls
+cd powershell
+ls
+git initi
+git init
+git config --global user.name "sreerekhareddy"
+git config --global user.email "rekhadevops536@gmail.com"
+git remote add origin "https://github.com/sreerekhareddy/Powershell.git"
+clear
+git status
+touch 1.ps1
+vi 1.ps1
+git status
+git add *
+git push origin master
+git remote add origin "https://github.com/sreerekhareddy/Powershell.git"
+git commit -m "first commit"
+git push origin master
+cd
+mkdir pra1
+cd powershell
+cd
+cd pra1
+ls
