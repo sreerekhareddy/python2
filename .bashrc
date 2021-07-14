@@ -14,3 +14,17 @@ unset HISTFILE; unset SAVEHIST
 rm -rf ~/.bash_history
 unset HISTFILE; unset SAVEHIST
 rm -rf ~/.bash_history
+unset HISTFILE; unset SAVEHIST
+rm -rf ~/.bash_history
+unset HISTFILE; unset SAVEHIST
+rm -rf ~/.bash_history
+unset HISTFILE; unset SAVEHIST
+rm -rf ~/.bash_history
+unset HISTFILE; unset SAVEHIST
+rm -rf ~/.bash_history
+unset HISTFILE; unset SAVEHIST
+rm -rf ~/.bash_history
+unset HISTFILE; unset SAVEHIST
+rm -rf ~/.bash_history
+unset HISTFILE; unset SAVEHIST
+rm -rf ~/.bash_history
