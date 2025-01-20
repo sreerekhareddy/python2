@@ -1,9 +1,5 @@
-jsdhfjshguerdhfjdf
-sdfjdshfkjhfd
-erjhjkerhjdfhhfd
-jsdkjhf
-hdvkbdv
-ieuafhiaehf
-eiuarhibvdv
-kdjvnkjdnv
+Failed to collect changes, error: Error collecting changes for VCS repository '"Testing1" {instance id=2, parent internal id=2, parent id=Testingfile_Testing1, description: "https://github.com/sreerekhareddy/python2#master"}'
+Collecting changes failed: jetbrains.buildServer.buildTriggers.vcs.git.submodules.MissingSubmoduleConfigException: The 'https://sreerekhareddy@github.com/sreerekhareddy/python2' repository has a submodule in the '0170d97eb9a09a62842191aa2ad99d28e1a02fbc' commit at the 'python' path, but has not .gitmodules configuration in the root directory, VCS root: "Testing1" {instance id=2, parent internal id=2, parent id=Testingfile_Testing1, description: "https://github.com/sreerekhareddy/python2#master"}
+20:06:24 Failed to collect changes, error: Error collecting changes for VCS repository '"Testing1" {instance id=2, parent internal id=2, parent id=Testingfile_Testing1, description: "https://github.com/sreerekhareddy/python2#master"}'
+Collecting changes failed: jetbrains.buildServer.buildTriggers.vcs.git.submodules.MissingSubmoduleConfigException: The 'https://sreerekhareddy@github.com/sreerekhareddy/python2' repository has a submodule in the '0170d97eb9a09a62842191aa2ad99d28e1a02fbc' commit at the 'python' path, but has not .gitmodules configuration in the root directory, VCS root: "Testing1" {instance id=2, parent internal id=2, parent id=Testingfile_Testing1, description: "https://github.com/sreerekhareddy/python2#master"}
 
