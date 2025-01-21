@@ -20,10 +20,10 @@ def main():
     if labels:
         for key, value in labels.items():
             # Print PRACTISE={key}
-            print(f"PRACTISE={key}")
+            print(f"env.PRACTISE={key}")
             # Set the TeamCity parameters for each value
-            print(f"##teamcity[setParameter name='PRACTISE' value='{value}']")
-            print(f"Parameter set: name='PRACTISE', value='{value}'")
+            print(f"##teamcity[setParameter name='env.PRACTISE' value='{value}']")
+            # print(f"Parameter set: name='PRACTISE', value='{value}'")
 
 if __name__ == "__main__":
     main()
