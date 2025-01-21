@@ -1,3 +1,4 @@
+import os
 from github_labels_fetcher2 import GitHubPRLabelsFetcher
 
 def main():
