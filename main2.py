@@ -14,12 +14,13 @@ def main():
     # Create an instance of the GitHubPRLabelsFetcher class
     fetcher = GitHubPRLabelsFetcher(owner, repo, GITHUB_TOKEN)
 
-     # Print the fetched labels
-    print(f"Fetched labels: {labels}")
-    
+        
     # Fetch and print label descriptions
     labels = fetcher.fetch_and_print_labels(pr_number)
 
+     # Print the fetched labels
+    print(f"Fetched labels: {labels}")
+    
     # Check if the labels were returned as key-value pairs
     if labels:
         key, value = labels
