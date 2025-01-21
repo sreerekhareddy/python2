@@ -22,8 +22,8 @@ def main():
             # Print PRACTISE={key}
             # print(f"PRACTISE='{key}'")
             # Set the TeamCity parameters for each value
-            print(f"##teamcity[setParameter name='|[|'{key}|'|]' value='|[|'{value}|'|]']")
-            print(f"Parameter set: name='|[|'{key}|'|]', value='|[|'{value}|'|]']")
+            print(f"##teamcity[setParameter name='{key}' value='{value}']")
+            print(f"Parameter set: name='{key}' value='{value}']")
 
 if __name__ == "__main__":
     main()
