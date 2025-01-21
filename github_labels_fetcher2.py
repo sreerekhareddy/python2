@@ -33,12 +33,15 @@ class GitHubPRLabelsFetcher:
                 for label in labels:
                     description = label.get('description', '')
                     if description:
-                        try:
-                            key, value = description.split(':', 1)
-                            label_dict[key.strip()] = value.strip()
-                            print(f"{key.strip()} : {value.strip()}")
-                        except ValueError:
-                            print(f"Invalid label description format: {description}")
+                        # Split the description by comma to separate multiple labels
+                        descriptions = description.split(',')
+                        for desc in descriptions:
+                            try:
+                                key, value = desc.split(':', 1)
+                                label_dict[key.strip()] = value.strip()
+                                print(f"{key.strip()} : {value.strip()}")
+                            except ValueError:
+                                print(f"Invalid label description format: {desc}")
             else:
                 print(f"No labels found for Pull Request #{pr_number}")
             return label_dict
