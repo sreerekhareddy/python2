@@ -30,19 +30,11 @@ class GitHubPRLabelsFetcher:
             if labels:
                 print(f"Labels for Pull Request #{pr_number}:")
                 for label in labels:
-                    # Get the label name and description
-                    name = label.get('name', '').strip()
-                    description = label.get('description', '').strip()
-                    if name and description:
-                        # Handle description as a key-value pair split by ':'
-                        desc_parts = description.split(',')
-                        for part in desc_parts:
-                            key_value = part.split(':', 1)
-                            if len(key_value) == 2:
-                                key = key_value[0].strip()
-                                value = key_value[1].strip()
-                                # Return the key-value pair
-                                return key, value
+                    description = label.get('description', '')
+                    if description:
+                        descriptions = description.split(',')
+                        for desc in descriptions:
+                            print(desc.strip())
             else:
                 print(f"No labels found for Pull Request #{pr_number}")
         else:
