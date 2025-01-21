@@ -27,16 +27,22 @@ class GitHubPRLabelsFetcher:
         if response.status_code == 200:
             # Parse the JSON response containing labels
             labels = response.json()
+            label_dict = {}
             if labels:
                 print(f"Labels for Pull Request #{pr_number}:")
                 for label in labels:
                     description = label.get('description', '')
                     if description:
-                        descriptions = description.split(',')
-                        for desc in descriptions:
-                            print(desc.strip())
+                        try:
+                            key, value = description.split(':', 1)
+                            label_dict[key.strip()] = value.strip()
+                            print(f"{key.strip()} : {value.strip()}")
+                        except ValueError:
+                            print(f"Invalid label description format: {description}")
             else:
                 print(f"No labels found for Pull Request #{pr_number}")
+            return label_dict
         else:
             print(f"Failed to fetch labels. HTTP Status Code: {response.status_code}")
             print("Error:", response.json())
+            return None
