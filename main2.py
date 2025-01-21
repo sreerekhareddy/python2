@@ -20,8 +20,9 @@ def main():
     if labels:
         for key, value in labels.items():
             # Set the TeamCity parameters for each key-value pair
-            print(f"##teamcity[setParameter name='{key}' value='{value}']")
+            sys.stdout.write(f"##teamcity[setParameter name='{key}' value='{value}']\n")
             print(f"Parameter set: name='{key}', value='{value}'")
 
 if __name__ == "__main__":
+    import sys  # Import sys to use sys.stdout.write
     main()
