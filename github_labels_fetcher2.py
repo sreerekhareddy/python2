@@ -1,10 +1,10 @@
 import requests
 
 class GitHubPRLabelsFetcher:
-    def __init__(self, owner, repo, token):
+    def __init__(self, owner, repo, GITHUB_TOKEN):
         self.owner = owner
         self.repo = repo
-        self.token = token
+        self.token = GITHUB_TOKEN
         self.url = f'https://api.github.com/repos/{self.owner}/{self.repo}/issues/labels'
 
     def fetch_labels(self, pr_number):
