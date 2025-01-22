@@ -19,11 +19,9 @@ def main():
     # Check if the labels were returned as key-value pairs
     if labels:
         for key, value in labels.items():
-            # Print PRACTISE={key}
-            # print(f"PRACTISE='{key}'")
+            if key.lower() == "pmbd-prod":
             # Set the TeamCity parameters for each value
-            print(f"##teamcity[setParameter name='{key}' value='{value}']")
-            print(f"Parameter set: name='{key}' value='{value}']")
+                print(f"##teamcity[setParameter name='PMBD-Prod' value='{value}']")
 
 if __name__ == "__main__":
     main()
