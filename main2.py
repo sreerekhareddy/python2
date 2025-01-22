@@ -31,9 +31,8 @@ def main():
     # Get current environment variables (TeamCity parameters)
     env_vars = os.environ
 
-    # Placeholder for system properties and configuration parameters
-    # These can be accessed in a real TeamCity environment
-    # Example: Retrieve system properties and config params from env_vars
+    # Retrieve system properties and configuration parameters from environment variables
+    # TeamCity often passes these as environment variables with specific prefixes
     system_properties = {k: v for k, v in env_vars.items() if k.startswith('system.')}
     config_params = {k: v for k, v in env_vars.items() if k.startswith('config.')}
 
