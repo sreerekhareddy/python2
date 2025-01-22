@@ -22,6 +22,12 @@ def main():
             if key.lower() == "pmbd-prod":
             # Set the TeamCity parameters for each value
                 print(f"##teamcity[setParameter name='PMBD-Prod' value='{value}']")
+            if key.lower() == "asw":
+            # Set the TeamCity parameters for each value
+                print(f"##teamcity[setParameter name='ASW' value='{value}']")
+            if key.lower() == "bsw":
+            # Set the TeamCity parameters for each value
+                print(f"##teamcity[setParameter name='BSW' value='{value}']")
 
 if __name__ == "__main__":
     main()
