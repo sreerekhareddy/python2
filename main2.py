@@ -22,7 +22,7 @@ def main():
         for key, value in labels.items():
             if key.lower() == "pmbd-prod":
             # Set the TeamCity parameters for each value
-                print(f"##teamcity[setParameter name='PMBD-Prod' value='{value}']")
+                print(f"##teamcity[setParameter name='PMBD_Prod' value='{value}']")
             if key.lower() == "asw":
             # Set the TeamCity parameters for each value
                 print(f"##teamcity[setParameter name='ASW' value='{value}']")
