@@ -1,6 +1,6 @@
 import os
 from github_labels_fetcher2 import GitHubPRLabelsFetcher
-from teamcity_api import get_teamcity_parameters  # Import from the new file
+from teamapi import get_teamcity_parameters  # Import from the new file
 
 def main():
     # GitHub repository details
