@@ -1,11 +1,13 @@
 import os
 from github_labels_fetcher2 import GitHubPRLabelsFetcher
+from teamcity_api import get_teamcity_parameters  # Import from the new file
 
 def main():
     # GitHub repository details
     GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
     if not GITHUB_TOKEN:
         raise ValueError("GITHUB_TOKEN environment variable is not set")
+    
     owner = 'sreerekhareddy'  # Replace with the repository owner's GitHub username
     repo = 'python2'  # Replace with the repository name
     pr_number = 1  # Replace with the pull request number
@@ -16,19 +18,22 @@ def main():
     # Fetch and print label descriptions
     labels = fetcher.fetch_and_print_labels(pr_number)
 
-    # Check if the labels were returned as key-value pairs
+    # Fetch existing parameters from TeamCity
+    teamcity_params = get_teamcity_parameters()
+
     if labels:
         print("##teamcity[setParameter name='HAS_LABELS' value='true']")
+        
         for key, value in labels.items():
-            if key.lower() == "pmbd-prod":
-            # Set the TeamCity parameters for each value
-                print(f"##teamcity[setParameter name='PMBD_Prod' value='{value}']")
-            if key.lower() == "asw":
-            # Set the TeamCity parameters for each value
-                print(f"##teamcity[setParameter name='ASW' value='{value}']")
-            if key.lower() == "bsw":
-            # Set the TeamCity parameters for each value
-                print(f"##teamcity[setParameter name='BSW' value='{value}']")
+            param_name = key.strip()  # Standardizing the key name
+            
+            if param_name in teamcity_params:
+                # If parameter exists, update it
+                print(f"##teamcity[setParameter name='{param_name}' value='{value}']")
+            else:
+                # If parameter does not exist, create it only for the current build
+                print(f"##teamcity[setParameter name='{param_name}' value='{value}'] (Temporary for this build)")
+
     else:
         print("##teamcity[setParameter name='HAS_LABELS' value='false']")
 
