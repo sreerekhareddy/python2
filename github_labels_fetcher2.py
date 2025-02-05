@@ -48,10 +48,11 @@ class GitHubPRLabelsFetcher:
                                     label_dict[key_repo] = key1.strip()
                                     key_release = key.strip() + "_release"
                                     label_dict[key_release] = value1.strip()
- 
+                                    print(f"{key.strip()} : {value.strip()}")
                                 else:
                                     key_release = key.strip() + "_release"
                                     label_dict[key_release] = value.strip()
+                                    print(f"{key.strip()} : {value.strip()}")
                             except ValueError:
                                 print(f"Invalid label description format: {desc}")
             else:
