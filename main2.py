@@ -23,7 +23,7 @@ def main():
     if labels:
         print("##teamcity[setParameter name='HAS_LABELS' value='true']")
         for key, value in labels.items():
-             if 'bsw' in key.lower():
+            if 'bsw' in key.lower():
                 print(f"##teamcity[setParameter name='BSW_repo' value='{key}']")
                 print(f"##teamcity[setParameter name='BSW_release' value='{value}']")
             else:
