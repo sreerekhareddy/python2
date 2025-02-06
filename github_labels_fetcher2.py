@@ -39,7 +39,7 @@ class GitHubPRLabelsFetcher:
                             try:
                                 # splitting the description into key and value pair
                                 key, value = desc.split(':', 1)
-                                    label_dict[key_release] = value.strip()
+                                    label_dict[key] = value.strip()
                                     print(f"{key.strip()} : {value.strip()}")
                             except ValueError:
                                 print(f"Invalid label description format: {desc}")
