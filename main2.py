@@ -18,27 +18,16 @@ def main():
     labels = fetcher.fetch_and_print_labels(pr_number)
 
     # Fetch existing TeamCity parameters
-    teamcity_params = get_teamcity_parameters()
+    #teamcity_params = get_teamcity_parameters()
 
     if labels:
         print("##teamcity[setParameter name='HAS_LABELS' value='true']")
         for key, value in labels.items():
-            # Convert the label key to lowercase for case-insensitive comparison
-            key_lower = key.lower()
-
-            # Check if the key exists in TeamCity parameters (case-insensitive)
-            found = False
-            for param_name in teamcity_params:
-                if param_name.lower() == key_lower:  # Compare lowercase keys
-                    # If parameter exists (case-insensitive match), update it
-                    print(f"##teamcity[setParameter name='{param_name}' value='{value}']")
-                    found = True
-                    break
-
-            # If no matching TeamCity parameter found, create it (temporary for build)
-            if not found:
-                print(f"##teamcity[setParameter name='{key}' value='{value}'] (Temporary for this build)")
-
+             if 'bsw' in key.lower():
+                print(f"##teamcity[setParameter name='BSW_repo' value='{key}']")
+                print(f"##teamcity[setParameter name='BSW_release' value='{value}']")
+            else:
+                print(f"##teamcity[setParameter name='{key}_release' value='{value}']")
     else:
         print("##teamcity[setParameter name='HAS_LABELS' value='false']")
 
