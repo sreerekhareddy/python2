@@ -39,18 +39,6 @@ class GitHubPRLabelsFetcher:
                             try:
                                 # splitting the description into key and value pair
                                 key, value = desc.split(':', 1)
- 
-                                # checking that can we split value further on the basis of : present or not
-                                # if yes then we will split it further and assign the key and value accordingly
-                                if(value.find(":") != -1):
-                                    key1, value1 = value.split(':', 1)
-                                    key_repo = key.strip() + "_repo"
-                                    label_dict[key_repo] = key1.strip()
-                                    key_release = key.strip() + "_release"
-                                    label_dict[key_release] = value1.strip()
-                                    print(f"{key.strip()} : {value.strip()}")
-                                else:
-                                    key_release = key.strip() + "_release"
                                     label_dict[key_release] = value.strip()
                                     print(f"{key.strip()} : {value.strip()}")
                             except ValueError:
