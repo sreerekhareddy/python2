@@ -1,0 +1,3 @@
+[submodule "submodules/maven_web"]
+	path = submodules/maven_web
+	url = https://github.com/sreerekhareddy/maven_web.git
