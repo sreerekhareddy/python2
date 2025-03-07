@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+from openpyxl import load_workbook
 
 failed_rings = []
 successful_rings = []
@@ -7,14 +8,17 @@ successful_rings = []
 # Define the Excel file path
 excel_file_path = 'D:\\New folder (3)\\VerifyModelsReportCI.xlsx'
 
-# Open the Excel file
-with pd.ExcelFile(excel_file_path, engine='openpyxl') as workbook:
-    sheet = pd.read_excel(workbook, 'Results')
+# ✅ Step 1: Open and Save the Workbook (This enables editing)
+wb = load_workbook(excel_file_path)
+wb.save(excel_file_path)  # This ensures that Excel is properly opened & saved
+wb.close()  # Close to release the file for pandas
 
-# Create a DataFrame with only the necessary columns
+# ✅ Step 2: Read the Excel file with pandas
+sheet = pd.read_excel(excel_file_path, sheet_name='Results', engine='openpyxl')
+
+# ✅ Step 3: Process the data
 data = pd.DataFrame(sheet, columns=['Ring', 'Mandatory'])
 
-# Iterate over the DataFrame
 for i in data.index:
     ring = data.at[i, 'Ring']
     mandatory = data.at[i, 'Mandatory']
@@ -24,13 +28,13 @@ for i in data.index:
         if pd.isna(mandatory) or str(mandatory).strip() == '':
             if ring not in successful_rings and ring not in failed_rings:
                 successful_rings.append(ring)
-        # If Mandatory contains any value (even "x", "some text", etc.) -> Failed Rings
+        # If Mandatory contains any value -> Failed Rings
         else:
             if ring in successful_rings:
                 successful_rings.remove(ring)
             if ring not in failed_rings:
                 failed_rings.append(ring)
 
-# Print results
+# ✅ Step 4: Print results
 print("Failed Rings:", failed_rings)
 print("Successful Rings:", successful_rings)
