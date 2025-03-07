@@ -4,18 +4,23 @@ import pandas as pd
 failed_rings = []
 successful_rings = []
 
-#excel_file_path = excel_file_path + os.sep + 'VerifyModelsReportCI.xlsx'
+# Define the Excel file path
 excel_file_path = 'D:\\New folder (3)\\VerifyModelsReportCI.xlsx'
-workbook = pd.ExcelFile(excel_file_path)
-sheet = pd.read_excel(workbook, 'Results')
+
+# Open the Excel file
+with pd.ExcelFile(excel_file_path, engine='openpyxl') as workbook:
+    sheet = pd.read_excel(workbook, 'Results')
+    
+# Create a DataFrame with only the necessary columns
 data = pd.DataFrame(sheet, columns=['Ring', 'Mandatory'])
 
+# Iterate over the DataFrame
 for i in data.index:
-    ring = data['Ring'][i]
-    mandatory = data['Mandatory'][i]
-    if str(ring) != 'nan':
-        if str(mandatory).strip() == '':
-            print(" The mandatory is", str(mandatory).strip())
+    ring = data.at[i, 'Ring']
+    mandatory = data.at[i, 'Mandatory']
+    
+    if pd.notna(ring):  # Check if 'Ring' is not NaN
+        if pd.isna(mandatory) or str(mandatory).strip() == '':  # Empty mandatory
             if ring not in successful_rings and ring not in failed_rings:
                 successful_rings.append(ring)
         else:
@@ -24,5 +29,6 @@ for i in data.index:
             if ring not in failed_rings:
                 failed_rings.append(ring)
 
+# Print results
 print("Failed Rings:", failed_rings)
 print("Successful Rings:", successful_rings)
