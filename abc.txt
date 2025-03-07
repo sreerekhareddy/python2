@@ -1,4 +1,3 @@
-import os
 import pandas as pd
 from openpyxl import load_workbook
 
@@ -8,42 +7,39 @@ successful_rings = []
 # Define the Excel file path
 excel_file_path = 'D:\\New folder (3)\\VerifyModelsReportCI.xlsx'
 
-# ✅ Step 1: Ensure the file is accessible (Open & Save if needed)
-try:
-    wb = load_workbook(excel_file_path, data_only=True)  # Open with values instead of formulas
-    wb.save(excel_file_path)  # Save to remove "read-only" or "protected view"
-    wb.close()  # Close to release the file for pandas
-except Exception as e:
-    print(f"Warning: Could not open/save Excel file. {e}")
+# ✅ Open the Workbook in Edit Mode (Without Saving)
+wb = load_workbook(excel_file_path, data_only=True)  # Reads values instead of formulas
+ws = wb['Results']  # Load the "Results" sheet
 
-# ✅ Step 2: Read the Excel file
-try:
-    df = pd.read_excel(excel_file_path, sheet_name='Results', engine='openpyxl')
+# ✅ Read Data into Pandas
+df = pd.DataFrame(ws.values)  # Read values directly
+df.columns = df.iloc[0]  # Set first row as column names
+df = df[1:].reset_index(drop=True)  # Remove header row from data
 
-    # Strip column names of any extra spaces
-    df.columns = df.columns.str.strip()
+# ✅ Strip column names (handles extra spaces)
+df.columns = df.columns.str.strip()
 
-    # ✅ Step 3: Process Data
-    if 'Ring' in df.columns and 'Mandatory' in df.columns:
-        for i in df.index:
-            ring = df.at[i, 'Ring']
-            mandatory = df.at[i, 'Mandatory']
+# ✅ Check if "Ring" and "Mandatory" exist
+if 'Ring' in df.columns and 'Mandatory' in df.columns:
+    for i in df.index:
+        ring = df.at[i, 'Ring']
+        mandatory = df.at[i, 'Mandatory']
 
-            if pd.notna(ring):  # Ensure Ring is not NaN
-                if pd.isna(mandatory) or str(mandatory).strip() == '':  # Empty Mandatory
-                    if ring not in successful_rings and ring not in failed_rings:
-                        successful_rings.append(ring)
-                else:  # Non-empty Mandatory (contains value)
-                    if ring in successful_rings:
-                        successful_rings.remove(ring)
-                    if ring not in failed_rings:
-                        failed_rings.append(ring)
+        if pd.notna(ring):  # Ensure Ring is not NaN
+            if pd.isna(mandatory) or str(mandatory).strip() == '':  # Empty Mandatory
+                if ring not in successful_rings and ring not in failed_rings:
+                    successful_rings.append(ring)
+            else:  # Non-empty Mandatory (contains value)
+                if ring in successful_rings:
+                    successful_rings.remove(ring)
+                if ring not in failed_rings:
+                    failed_rings.append(ring)
 
-        # ✅ Step 4: Print results
-        print("Failed Rings:", failed_rings)
-        print("Successful Rings:", successful_rings)
-    else:
-        print("Error: 'Ring' or 'Mandatory' column not found in the Excel sheet!")
+    # ✅ Print results
+    print("Failed Rings:", failed_rings)
+    print("Successful Rings:", successful_rings)
+else:
+    print("Error: 'Ring' or 'Mandatory' column not found in the Excel sheet!")
 
-except Exception as e:
-    print(f"Error reading Excel file: {e}")
+# ✅ Close workbook
+wb.close()
