@@ -1,45 +1,28 @@
+import os
 import pandas as pd
-from openpyxl import load_workbook
 
 failed_rings = []
 successful_rings = []
 
-# Define the Excel file path
+#excel_file_path = excel_file_path + os.sep + 'VerifyModelsReportCI.xlsx'
 excel_file_path = 'D:\\New folder (3)\\VerifyModelsReportCI.xlsx'
+workbook = pd.ExcelFile(excel_file_path)
+sheet = pd.read_excel(workbook, 'Results')
+data = pd.DataFrame(sheet, columns=['Ring', 'Mandatory'])
 
-# ✅ Open the Workbook in Edit Mode (Without Saving)
-wb = load_workbook(excel_file_path, data_only=True)  # Reads values instead of formulas
-ws = wb['Results']  # Load the "Results" sheet
+for i in data.index:
+    ring = data['Ring'][i]
+    mandatory = data['Mandatory'][i]
+    if str(ring) != 'nan':
+        if str(mandatory).strip() == '':
+            print(" The mandatory is", str(mandatory).strip())
+            if ring not in successful_rings and ring not in failed_rings:
+                successful_rings.append(ring)
+        else:
+            if ring in successful_rings:
+                successful_rings.remove(ring)
+            if ring not in failed_rings:
+                failed_rings.append(ring)
 
-# ✅ Read Data into Pandas
-df = pd.DataFrame(ws.values)  # Read values directly
-df.columns = df.iloc[0]  # Set first row as column names
-df = df[1:].reset_index(drop=True)  # Remove header row from data
-
-# ✅ Strip column names (handles extra spaces)
-df.columns = df.columns.str.strip()
-
-# ✅ Check if "Ring" and "Mandatory" exist
-if 'Ring' in df.columns and 'Mandatory' in df.columns:
-    for i in df.index:
-        ring = df.at[i, 'Ring']
-        mandatory = df.at[i, 'Mandatory']
-
-        if pd.notna(ring):  # Ensure Ring is not NaN
-            if pd.isna(mandatory) or str(mandatory).strip() == '':  # Empty Mandatory
-                if ring not in successful_rings and ring not in failed_rings:
-                    successful_rings.append(ring)
-            else:  # Non-empty Mandatory (contains value)
-                if ring in successful_rings:
-                    successful_rings.remove(ring)
-                if ring not in failed_rings:
-                    failed_rings.append(ring)
-
-    # ✅ Print results
-    print("Failed Rings:", failed_rings)
-    print("Successful Rings:", successful_rings)
-else:
-    print("Error: 'Ring' or 'Mandatory' column not found in the Excel sheet!")
-
-# ✅ Close workbook
-wb.close()
+print("Failed Rings:", failed_rings)
+print("Successful Rings:", successful_rings)
