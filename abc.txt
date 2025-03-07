@@ -1,39 +1,28 @@
-Traceback (most recent call last):
-15:41:40       File "C:\ProgramData\Anaconda3\lib\site-packages\urllib3\connectionpool.py", line 692, in urlopen
-15:41:40         conn = self._get_conn(timeout=pool_timeout)
-15:41:40       File "C:\ProgramData\Anaconda3\lib\site-packages\urllib3\connectionpool.py", line 281, in _get_conn
-15:41:40         return conn or self._new_conn()
-15:41:40       File "C:\ProgramData\Anaconda3\lib\site-packages\urllib3\connectionpool.py", line 1009, in _new_conn
-15:41:40         raise SSLError(
-15:41:40     urllib3.exceptions.SSLError: Can't connect to HTTPS URL because the SSL module is not available.
-15:41:40     During handling of the above exception, another exception occurred:
-15:41:40     Traceback (most recent call last):
-15:41:40       File "C:\ProgramData\Anaconda3\lib\site-packages\requests\adapters.py", line 440, in send
-15:41:40         resp = conn.urlopen(
-15:41:40       File "C:\ProgramData\Anaconda3\lib\site-packages\urllib3\connectionpool.py", line 785, in urlopen
-15:41:40         retries = retries.increment(
-15:41:40       File "C:\ProgramData\Anaconda3\lib\site-packages\urllib3\util\retry.py", line 592, in increment
-15:41:40         raise MaxRetryError(_pool, url, error or ResponseError(cause))
-15:41:40     urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='api.github.com', port=443): Max retries exceeded with url: /repos/KshitijKumar01/TeamCityPRPipeline/issues/1/labels (Caused by SSLError("Can't connect to HTTPS URL because the SSL module is not available."))
-15:41:40     During handling of the above exception, another exception occurred:
-15:41:40     Traceback (most recent call last):
-15:41:40       File "C:\TeamCity\buildAgent\work\9a736e9b78aa74ee\update_parameters.py", line 36, in <module>
-15:41:40         main()
-15:41:40       File "C:\TeamCity\buildAgent\work\9a736e9b78aa74ee\update_parameters.py", line 17, in main
-15:41:40         labels = fetcher.fetch_and_print_labels(pr_number)
-15:41:40       File "C:\TeamCity\buildAgent\work\9a736e9b78aa74ee\fetch_label.py", line 32, in fetch_and_print_labels
-15:41:40         response = self.fetch_labels(pr_number)
-15:41:40       File "C:\TeamCity\buildAgent\work\9a736e9b78aa74ee\fetch_label.py", line 27, in fetch_labels
-15:41:40         response = requests.get(url, headers=headers)
-15:41:40       File "C:\ProgramData\Anaconda3\lib\site-packages\requests\api.py", line 75, in get
-15:41:40         return request('get', url, params=params, **kwargs)
-15:41:40       File "C:\ProgramData\Anaconda3\lib\site-packages\requests\api.py", line 61, in request
-15:41:40         return session.request(method=method, url=url, **kwargs)
-15:41:40       File "C:\ProgramData\Anaconda3\lib\site-packages\requests\sessions.py", line 529, in request
-15:41:40         resp = self.send(prep, **send_kwargs)
-15:41:40       File "C:\ProgramData\Anaconda3\lib\site-packages\requests\sessions.py", line 645, in send
-15:41:40         r = adapter.send(request, **kwargs)
-15:41:40       File "C:\ProgramData\Anaconda3\lib\site-packages\requests\adapters.py", line 517, in send
-15:41:40         raise SSLError(e, request=request)
-15:41:40     requests.exceptions.SSLError: HTTPSConnectionPool(host='api.github.com', port=443): Max retries exceeded with url: /repos/KshitijKumar01/TeamCityPRPipeline/issues/1/labels (Caused by SSLError("Can't connect to HTTPS URL because the SSL module is not available."))
-15:41:40     Process failed with code 1
+import os
+import pandas as pd
+
+failed_rings = []
+successful_rings = []
+
+#excel_file_path = excel_file_path + os.sep + 'VerifyModelsReportCI.xlsx'
+excel_file_path = 'D:\\New folder (3)\\VerifyModelsReportCI.xlsx'
+workbook = pd.ExcelFile(excel_file_path)
+sheet = pd.read_excel(workbook, 'Results')
+data = pd.DataFrame(sheet, columns=['Ring', 'Mandatory'])
+
+for i in data.index:
+    ring = data['Ring'][i]
+    mandatory = data['Mandatory'][i]
+    if str(ring) != 'nan':
+        if str(mandatory).strip() == '':
+            print(" The mandatory is", str(mandatory).strip())
+            if ring not in successful_rings and ring not in failed_rings:
+                successful_rings.append(ring)
+        else:
+            if ring in successful_rings:
+                successful_rings.remove(ring)
+            if ring not in failed_rings:
+                failed_rings.append(ring)
+
+print("Failed Rings:", failed_rings)
+print("Successful Rings:", successful_rings)
