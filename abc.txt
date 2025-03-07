@@ -8,33 +8,38 @@ successful_rings = []
 # Define the Excel file path
 excel_file_path = 'D:\\New folder (3)\\VerifyModelsReportCI.xlsx'
 
-# ✅ Step 1: Open and Save the Workbook (This enables editing)
-wb = load_workbook(excel_file_path)
-wb.save(excel_file_path)  # This ensures that Excel is properly opened & saved
-wb.close()  # Close to release the file for pandas
+# ✅ Step 1: Open and Save the Workbook to Enable Editing
+wb = load_workbook(excel_file_path, data_only=True)  # Open with data-only mode
+wb.save(excel_file_path)  # Save to ensure Excel updates the file
+wb.close()  # Close to release the lock
 
 # ✅ Step 2: Read the Excel file with pandas
 sheet = pd.read_excel(excel_file_path, sheet_name='Results', engine='openpyxl')
 
-# ✅ Step 3: Process the data
-data = pd.DataFrame(sheet, columns=['Ring', 'Mandatory'])
+# ✅ Step 3: Convert column names to match exactly (avoiding hidden spaces)
+sheet.columns = sheet.columns.str.strip()
 
-for i in data.index:
-    ring = data.at[i, 'Ring']
-    mandatory = data.at[i, 'Mandatory']
+# ✅ Step 4: Check if 'Ring' and 'Mandatory' columns exist
+if 'Ring' not in sheet.columns or 'Mandatory' not in sheet.columns:
+    print("Error: Columns 'Ring' or 'Mandatory' not found in the Excel file.")
+else:
+    # ✅ Step 5: Process the data
+    data = sheet[['Ring', 'Mandatory']].copy()  # Copy relevant columns
 
-    if pd.notna(ring):  # Check if 'Ring' is not NaN
-        # If Mandatory is empty or just spaces -> Successful Rings
-        if pd.isna(mandatory) or str(mandatory).strip() == '':
-            if ring not in successful_rings and ring not in failed_rings:
-                successful_rings.append(ring)
-        # If Mandatory contains any value -> Failed Rings
-        else:
-            if ring in successful_rings:
-                successful_rings.remove(ring)
-            if ring not in failed_rings:
-                failed_rings.append(ring)
+    for i in data.index:
+        ring = data.at[i, 'Ring']
+        mandatory = str(data.at[i, 'Mandatory']).strip()  # Convert to string and strip spaces
 
-# ✅ Step 4: Print results
-print("Failed Rings:", failed_rings)
-print("Successful Rings:", successful_rings)
+        if pd.notna(ring):  # Check if 'Ring' is not NaN
+            if mandatory in [None, '', 'nan']:  # ✅ Empty or NaN → Successful
+                if ring not in successful_rings and ring not in failed_rings:
+                    successful_rings.append(ring)
+            else:  # ✅ Any non-empty value → Failed
+                if ring in successful_rings:
+                    successful_rings.remove(ring)
+                if ring not in failed_rings:
+                    failed_rings.append(ring)
+
+    # ✅ Step 6: Print results
+    print("Failed Rings:", failed_rings)
+    print("Successful Rings:", successful_rings)
