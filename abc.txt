@@ -10,7 +10,7 @@ excel_file_path = 'D:\\New folder (3)\\VerifyModelsReportCI.xlsx'
 # Open the Excel file
 with pd.ExcelFile(excel_file_path, engine='openpyxl') as workbook:
     sheet = pd.read_excel(workbook, 'Results')
-    
+
 # Create a DataFrame with only the necessary columns
 data = pd.DataFrame(sheet, columns=['Ring', 'Mandatory'])
 
@@ -18,11 +18,13 @@ data = pd.DataFrame(sheet, columns=['Ring', 'Mandatory'])
 for i in data.index:
     ring = data.at[i, 'Ring']
     mandatory = data.at[i, 'Mandatory']
-    
+
     if pd.notna(ring):  # Check if 'Ring' is not NaN
-        if pd.isna(mandatory) or str(mandatory).strip() == '':  # Empty mandatory
+        # If Mandatory is empty or just spaces -> Successful Rings
+        if pd.isna(mandatory) or str(mandatory).strip() == '':
             if ring not in successful_rings and ring not in failed_rings:
                 successful_rings.append(ring)
+        # If Mandatory contains any value (even "x", "some text", etc.) -> Failed Rings
         else:
             if ring in successful_rings:
                 successful_rings.remove(ring)
