@@ -1,28 +1,22 @@
-import os
-import pandas as pd
+def create_new_branch(new_branch):
+    """Create a new branch if it doesn't exist, else checkout the existing one."""
+    print(f"Checking if branch {new_branch} exists...")
 
-failed_rings = []
-successful_rings = []
-
-#excel_file_path = excel_file_path + os.sep + 'VerifyModelsReportCI.xlsx'
-excel_file_path = 'D:\\New folder (3)\\VerifyModelsReportCI.xlsx'
-workbook = pd.ExcelFile(excel_file_path)
-sheet = pd.read_excel(workbook, 'Results')
-data = pd.DataFrame(sheet, columns=['Ring', 'Mandatory'])
-
-for i in data.index:
-    ring = data['Ring'][i]
-    mandatory = data['Mandatory'][i]
-    if str(ring) != 'nan':
-        if str(mandatory).strip() == '':
-            print(" The mandatory is", str(mandatory).strip())
-            if ring not in successful_rings and ring not in failed_rings:
-                successful_rings.append(ring)
-        else:
-            if ring in successful_rings:
-                successful_rings.remove(ring)
-            if ring not in failed_rings:
-                failed_rings.append(ring)
-
-print("Failed Rings:", failed_rings)
-print("Successful Rings:", successful_rings)
+    # Check if the branch exists locally or remotely
+    branch_exists = False
+    try:
+        # List all branches (both local and remote)
+        result = subprocess.run(f"git branch --all", shell=True, check=True, capture_output=True, text=True)
+        if new_branch in result.stdout:
+            branch_exists = True
+            print(f"Branch {new_branch} exists, checking out...")
+    except subprocess.CalledProcessError as e:
+        print(f"Error checking for existing branches: {e.stderr}")
+    
+    if branch_exists:
+        # Checkout to the existing branch
+        run_command(f"git checkout {new_branch}")
+    else:
+        # Create and checkout to the new branch
+        print(f"Creating new branch: {new_branch}")
+        run_command(f"git checkout -b {new_branch}")
