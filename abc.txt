@@ -1,16 +1,52 @@
-def create_new_branch(new_branch):
-    """Check if the branch exists. If yes, print a message and skip the stage."""
-    print(f"Checking if branch {new_branch} exists...")
+import subprocess
+import requests
+import os
+import sys
 
-    try:
-        # List all branches (both local and remote)
-        result = subprocess.run(f"{git_path} branch --all", shell=True, check=True, capture_output=True, text=True)
-        if new_branch in result.stdout:
-            print(f"Branch '{new_branch}' already exists. Skipping stage.")
-            sys.exit(0)  # Exit script early
-    except subprocess.CalledProcessError as e:
-        print(f"Error checking for existing branches: {e.stderr}")
+REPO_NAME = ''
+if str("%teamcity.build.vcs.branch.Nem00Projects_Edm2Primary%").startswith("refs/pull/"):
+    REPO_NAME = 'EDM2_Primary'
+    print(f"##teamcity[setParameter name='REPO_NAME' value='{REPO_NAME}']")
+if str("%teamcity.build.vcs.branch.Nem00Projects_EdmERAD3Primary%").startswith("refs/pull/"):
+    REPO_NAME = 'EDM_eRAD3_Primary'
+    print(f"##teamcity[setParameter name='REPO_NAME' value='{REPO_NAME}']")
 
-    # Create and checkout to the new branch
-    print(f"Creating new branch: {new_branch}")
-    run_command(f"{git_path} checkout -b {new_branch}")
+
+controller_path = f"%CONFIG_PATH%\\{REPO_NAME}\\Controller.txt"
+
+print(f"##teamcity[setParameter name='BRANCH_NAME' value='{'%teamcity.pullRequest.source.branch%'}']")
+# Define the necessary variables
+GITHUB_TOKEN = "%GITHUB_TOKEN%"
+ORGANISATION = "%ORGANISATION%"
+CONFIG_PATH = '%CONFIG_PATH%'
+BRANCH_NAME = '%teamcity.pullRequest.source.branch%'
+PR_NUMBER = '%teamcity.pullRequest.number%'
+TRIGGER_DOWNSTREAM = False
+
+    # URL construction
+url = f'https://github.intra.fcagroup.com/raw/{ORGANISATION}/{REPO_NAME}/{BRANCH_NAME}/CICD/Controller.txt'
+print(url)
+
+# Headers with Authorization and Accept
+headers = {
+    'Authorization': f'token {GITHUB_TOKEN}',
+    'Accept': 'application/vnd.github.v3.raw'
+}
+
+# Output file path
+output_path = os.path.join(CONFIG_PATH, REPO_NAME, 'Controller.txt')
+
+# Perform the GET request
+response = requests.get(url, headers=headers)
+
+# Check if request was successful
+if response.status_code == 200:
+    # Write response content to file
+    with open(output_path, 'wb') as f:
+        f.write(response.content)
+    print(f"File downloaded successfully to: {output_path}")
+else:
+    print(f"Failed to download file. Status code: {response.status_code}")
+    print(f"Error message: {response.text}")
+print(f"##teamcity[setParameter name='IS_PR' value='True']")
+print(f"##teamcity[setParameter name='PULL_NO' value='{'%teamcity.pullRequest.number%'}']")
